@@ -3,7 +3,7 @@
 SERVICE_FILE=$(tempfile)
 
 echo "--- Download template ---"
-wget -q -O "$SERVICE_FILE" 'https://raw.githubusercontent.com/jasonblewis/sample-service-script/master/service.sh' || { echo 'ERROR: Could not retreive service.sh from github'; exit 1;}
+wget -q -O "$SERVICE_FILE" 'https://raw.githubusercontent.com/peuh/sample-service-script/master/service.sh' || { echo 'ERROR: Could not retrieve service.sh from github'; exit 1;}
 
 chmod +x "$SERVICE_FILE"
 echo ""
@@ -31,8 +31,8 @@ prompt_token() {
 }
 
 prompt_token 'SERVICE_NAME'        'Service name'
-if [ -f "/etc/init.d/$NAME" ]; then
-  echo "Error: service '$NAME' already exists"
+if [ -f "/etc/init.d/$SERVICE_NAME" ]; then
+  echo "Error: service '$SERVICE_NAME' already exists"
   exit 1
 fi
 
@@ -52,25 +52,25 @@ if [ ! -w /etc/init.d ]; then
   echo "That's smart, always be really cautious with third-party shell scripts!"
   echo "You should now type those commands as superuser to install and run your service:"
   echo ""
-  echo "   mv \"$SERVICE_FILE\" \"/etc/init.d/$NAME\""
-  echo "   touch \"/var/log/$NAME.log\" && chown \"$USERNAME\" \"/var/log/$NAME.log\""
-  echo "   update-rc.d \"$NAME\" defaults"
-  echo "   service \"$NAME\" start"
+  echo "   mv \"$SERVICE_FILE\" \"/etc/init.d/$SERVICE_NAME\""
+  echo "   touch \"/var/log/$SERVICE_NAME.log\" && chown \"$USERNAME\" \"/var/log/$SERVICE_NAME.log\""
+  echo "   update-rc.d \"$SERVICE_NAME\" defaults"
+  echo "   service \"$SERVICE_NAME\" start"
 else
-  echo "1. mv \"$SERVICE_FILE\" \"/etc/init.d/$NAME\""
-  mv -v "$SERVICE_FILE" "/etc/init.d/$NAME"
-  echo "2. touch \"/var/log/$NAME.log\" && chown \"$USERNAME\" \"/var/log/$NAME.log\""
-  touch "/var/log/$NAME.log" && chown "$USERNAME" "/var/log/$NAME.log"
-  echo "3. update-rc.d \"$NAME\" defaults"
-  update-rc.d "$NAME" defaults
-  echo "4. service \"$NAME\" start"
-  service "$NAME" start
+  echo "1. mv \"$SERVICE_FILE\" \"/etc/init.d/$SERVICE_NAME\""
+  mv -v "$SERVICE_FILE" "/etc/init.d/$SERVICE_NAME"
+  echo "2. touch \"/var/log/$SERVICE_NAME.log\" && chown \"$USERNAME\" \"/var/log/$SERVICE_NAME.log\""
+  touch "/var/log/$SERVICE_NAME.log" && chown "$USERNAME" "/var/log/$SERVICE_NAME.log"
+  echo "3. update-rc.d \"$SERVICE_NAME\" defaults"
+  update-rc.d "$SERVICE_NAME" defaults
+  echo "4. service \"$SERVICE_NAME\" start"
+  service "$SERVICE_NAME" start
 fi
 
 echo ""
 echo "---Uninstall instructions ---"
 echo "The service can uninstall itself:"
-echo "    service \"$NAME\" uninstall"
-echo "It will simply run update-rc.d -f \"$NAME\" remove && rm -f \"/etc/init.d/$NAME\""
+echo "    service \"$SERVICE_NAME\" uninstall"
+echo "It will simply run update-rc.d -f \"$SERVICE_NAME\" remove && rm -f \"/etc/init.d/$SERVICE_NAME\""
 echo ""
 echo "--- Terminated ---"

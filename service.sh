@@ -1,6 +1,6 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          <NAME>
+# Provides:          <SERVICE_NAME>
 # Required-Start:    $local_fs $network $named $time $syslog
 # Required-Stop:     $local_fs $network $named $time $syslog
 # Default-Start:     2 3 4 5
@@ -44,7 +44,7 @@ uninstall() {
     stop
     rm -f "$PIDFILE"
     echo "Notice: log file was not removed: '$LOGFILE'" >&2
-    update-rc.d -f <NAME> remove
+    update-rc.d -f <SERVICE_NAME> remove
     rm -fv "$0"
   fi
 }
